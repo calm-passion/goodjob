@@ -1,0 +1,19 @@
+{
+  "name": "function_graph",
+  "version": "1.0.0",
+  "description": "函数调用流程图分析工具，支持 TypeScript（可扩展其他语言）",
+  "bin": {
+    "goodjob": "./bin/function_graph.js"
+  },
+  "scripts": {
+    "dev": "nodemon --watch src --ext ts --exec \"node bin/function_graph.js -entry=./test-project/src/index.ts -output=./output/graph.json\""
+  },
+  "dependencies": {
+    "typescript": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.15",
+    "nodemon": "^3.1.0",
+    "ts-node": "^10.9.2"
+  }
+}
