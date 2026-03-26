@@ -75,6 +75,80 @@ class TypeScriptAnalyzerContext implements AnalyzerContext {
     for (const callExpr of callExprs) {
       const expr = callExpr.expression;
 
+      // ── new ClassName() → 找该类的 constructor ─────────────────────────────
+      if (ts.isNewExpression(callExpr)) {
+        let targetNode: ts.Node;
+        if (ts.isIdentifier(expr)) {
+          targetNode = expr;
+        } else if (ts.isPropertyAccessExpression(expr)) {
+          targetNode = expr.name;
+        } else {
+          continue;
+        }
+        let symbol = this.checker.getSymbolAtLocation(targetNode);
+        if (!symbol) continue;
+        if (symbol.flags & ts.SymbolFlags.Alias) {
+          symbol = this.checker.getAliasedSymbol(symbol);
+        }
+        const decls = symbol.getDeclarations();
+        if (!decls) continue;
+        for (const d of decls) {
+          if (
+            (ts.isClassDeclaration(d) || ts.isClassExpression(d)) &&
+            !d.getSourceFile().fileName.endsWith('.d.ts') &&
+            !isExternalPath(d.getSourceFile().fileName)
+          ) {
+            const ctor = (d as ts.ClassDeclaration).members.find(
+              (m) => ts.isConstructorDeclaration(m) && (m as ts.ConstructorDeclaration).body !== undefined,
+            ) as ts.ConstructorDeclaration | undefined;
+            if (ctor && !callees.includes(ctor)) {
+              callees.push(ctor);
+            }
+          }
+        }
+        continue;
+      }
+
+      // ── super() → 找父类的 constructor ────────────────────────────────────
+      if (expr.kind === ts.SyntaxKind.SuperKeyword) {
+        // 从当前函数节点向上找到所在的类声明
+        let cur: ts.Node = funcNode;
+        while (cur && !ts.isClassDeclaration(cur) && !ts.isClassExpression(cur)) {
+          cur = cur.parent;
+        }
+        if (!cur) continue;
+        const classDecl = cur as ts.ClassDeclaration | ts.ClassExpression;
+        const heritage = classDecl.heritageClauses?.find(
+          (h) => h.token === ts.SyntaxKind.ExtendsKeyword,
+        );
+        if (!heritage || heritage.types.length === 0) continue;
+        const parentExpr = heritage.types[0].expression;
+        let parentSymbol = this.checker.getSymbolAtLocation(parentExpr);
+        if (!parentSymbol) continue;
+        if (parentSymbol.flags & ts.SymbolFlags.Alias) {
+          parentSymbol = this.checker.getAliasedSymbol(parentSymbol);
+        }
+        const parentDecls = parentSymbol.getDeclarations();
+        if (!parentDecls) continue;
+        for (const d of parentDecls) {
+          if (
+            (ts.isClassDeclaration(d) || ts.isClassExpression(d)) &&
+            !d.getSourceFile().fileName.endsWith('.d.ts') &&
+            !isExternalPath(d.getSourceFile().fileName)
+          ) {
+            const ctor = (d as ts.ClassDeclaration).members.find(
+              (m) => ts.isConstructorDeclaration(m) && (m as ts.ConstructorDeclaration).body !== undefined,
+            ) as ts.ConstructorDeclaration | undefined;
+            if (ctor && !callees.includes(ctor)) {
+              callees.push(ctor);
+            }
+          }
+        }
+        continue;
+      }
+
+      // ── 普通 CallExpression ────────────────────────────────────────────────
+
       // 确定要查 Symbol 的目标节点
       let targetNode: ts.Node;
       if (ts.isIdentifier(expr)) {

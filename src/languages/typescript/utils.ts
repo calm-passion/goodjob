@@ -44,6 +44,10 @@ export function getFunctionName(
   sourceFile: ts.SourceFile,
 ): string {
   if (ts.isConstructorDeclaration(node)) {
+    const parent = node.parent;
+    if ((ts.isClassDeclaration(parent) || ts.isClassExpression(parent)) && parent.name) {
+      return `${parent.name.text}.constructor`;
+    }
     return 'constructor';
   }
 

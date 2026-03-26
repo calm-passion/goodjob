@@ -20,7 +20,6 @@ function parseArgs(argv: string[]): Record<string, string> {
 }
 
 function main(): void {
-  console.log("修改343")
   const args = parseArgs(process.argv.slice(2));
 
   if (!args['entry'] || !args['output']) {
@@ -47,22 +46,27 @@ function main(): void {
 
   console.log(`分析入口: ${entryFile}`);
 
-  // 获取对应语言的分析器
-  const analyzer = getAnalyzer(entryFile);
+  try {
+    // 获取对应语言的分析器
+    const analyzer = getAnalyzer(entryFile);
 
-  // 初始化分析上下文
-  console.log('初始化语言服务...');
-  const ctx = analyzer.initialize(entryFile);
+    // 初始化分析上下文
+    console.log('初始化语言服务...');
+    const ctx = analyzer.initialize(entryFile);
 
-  // 构建函数调用图
-  console.log('构建函数调用图...');
-  const roots = buildGraph(entryFile, ctx);
+    // 构建函数调用图
+    console.log('构建函数调用图...');
+    const roots = buildGraph(entryFile, ctx);
 
-  // 序列化并写出
-  const json = serializeGraph(roots);
-  fs.writeFileSync(outputFile, json, 'utf-8');
+    // 序列化并写出
+    const json = serializeGraph(roots);
+    fs.writeFileSync(outputFile, json, 'utf-8');
 
-  console.log(`完成，输出至: ${outputFile}`);
+    console.log(`完成，输出至: ${outputFile}`);
+  } catch (e) {
+    console.error((e as Error).message);
+    process.exit(1);
+  }
 }
 
 main();
