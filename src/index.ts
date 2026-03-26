@@ -20,7 +20,7 @@ function parseArgs(argv: string[]): Record<string, string> {
 }
 
 function main(): void {
-  console.log("修改")
+  console.log("修改343")
   const args = parseArgs(process.argv.slice(2));
 
   if (!args['entry'] || !args['output']) {

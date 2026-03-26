@@ -6,7 +6,9 @@
     "goodjob": "./bin/function_graph.js"
   },
   "scripts": {
-    "dev": "nodemon --watch src --ext ts --exec \"node bin/function_graph.js -entry=./test-project/ts/src/index.ts -output=./output/graph.json\""
+    "copy-assets": "node -e \"const f=require('fs');f.mkdirSync('dist/languages/python',{recursive:true});f.copyFileSync('src/languages/python/extract.py','dist/languages/python/extract.py');\"",
+    "build": "tsc && npm run copy-assets",
+    "dev": "npm run copy-assets && tsc --watch"
   },
   "dependencies": {
     "typescript": "^5.0.0"

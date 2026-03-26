@@ -11,7 +11,12 @@
       "Bash(1 node:*)",
       "Bash(node bin/function_graph.js -entry=\"./src/index.ts\" -output=\"./output/x.json\")",
       "Bash(node bin/function_graph.js -entry=\"./README.md\" -output=\"./output/x.json\")",
-      "Bash(goodjob -entry=\"./test-project/ts/src/index.ts\" -output=\"./output/goodjob_test.json\")"
+      "Bash(goodjob -entry=\"./test-project/ts/src/index.ts\" -output=\"./output/goodjob_test.json\")",
+      "Bash(npx tsc:*)",
+      "Bash(node bin/function_graph.js -entry=\"./test-project/ts/src/index.ts\" -output=\"./output/graph.json\")",
+      "Bash(npm run:*)",
+      "Read(//c/Users/jlc/Desktop/pro/jlc/schematic-agent/**)",
+      "Bash(node C:/Users/jlc/Desktop/pro/test/goodjob/bin/function_graph.js -entry=\"./start.py\" -output=\"./output/graph.json\")"
     ]
   }
 }
