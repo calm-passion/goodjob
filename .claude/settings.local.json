@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node bin/function_graph.js -entry=\"./test-project/src/index.ts\" -output=\"./output/graph_after.json\")",
+      "Bash(node -e \"const g=require\\(''''./output/graph_after.json''''\\);function walk\\(n,d\\){if\\(!n\\)return;const arr=Array.isArray\\(n\\)?n:[n];for\\(const x of arr\\){console.log\\('''' ''''.repeat\\(d*2\\)+x.function_name+'''' \\(''''+x.definition_file_path.split\\(/[/\\\\]/\\).pop\\(\\)+''''\\)''''\\);walk\\(x.childs,d+1\\);}}walk\\(g,0\\);\")",
+      "Bash(node bin/function_graph.js -entry=\"./test-project-python/main.py\" -output=\"./output/graph_python.json\")",
+      "Bash(node -e \":*)",
+      "Bash(node bin/function_graph.js -entry=\"./test-project/ts/src/index.ts\" -output=\"./output/graph_ts.json\")",
+      "Bash(node bin/function_graph.js -entry=\"./test-project/python/src/main.py\" -output=\"./output/graph_py.json\")",
+      "Bash(node bin/function_graph.js -entry=\"./test-project/ts/src/index.ts\" -output=\"./output/no_exist.json\" 2)",
+      "Bash(1 node:*)",
+      "Bash(node bin/function_graph.js -entry=\"./src/index.ts\" -output=\"./output/x.json\")",
+      "Bash(node bin/function_graph.js -entry=\"./README.md\" -output=\"./output/x.json\")",
+      "Bash(goodjob -entry=\"./test-project/ts/src/index.ts\" -output=\"./output/goodjob_test.json\")"
+    ]
+  }
+}

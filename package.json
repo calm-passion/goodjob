@@ -6,7 +6,7 @@
     "goodjob": "./bin/function_graph.js"
   },
   "scripts": {
-    "dev": "nodemon --watch src --ext ts --exec \"node bin/function_graph.js -entry=./test-project/src/index.ts -output=./output/graph.json\""
+    "dev": "nodemon --watch src --ext ts --exec \"node bin/function_graph.js -entry=./test-project/ts/src/index.ts -output=./output/graph.json\""
   },
   "dependencies": {
     "typescript": "^5.0.0"

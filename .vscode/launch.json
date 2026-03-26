@@ -1,0 +1,55 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug function_graph",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["--require", "ts-node/register"],
+      "program": "${workspaceFolder}/src/index.ts",
+      "args": [
+        "-entry=./test-project/src/index.ts",
+        "-output=./output/graph.json"
+      ],
+      "cwd": "${workspaceFolder}",
+      "sourceMaps": true,
+      "env": {
+        "TS_NODE_PROJECT": "${workspaceFolder}/tsconfig.json"
+      },
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**"]
+    },
+    {
+      "name": "Debug function_graph (自定义参数)",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["--require", "ts-node/register"],
+      "program": "${workspaceFolder}/src/index.ts",
+      "args": [
+        "-entry=${input:entryFile}",
+        "-output=${input:outputFile}"
+      ],
+      "cwd": "${workspaceFolder}",
+      "sourceMaps": true,
+      "env": {
+        "TS_NODE_PROJECT": "${workspaceFolder}/tsconfig.json"
+      },
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**"]
+    }
+  ],
+  "inputs": [
+    {
+      "id": "entryFile",
+      "type": "promptString",
+      "description": "入口文件路径（相对于项目根目录）",
+      "default": "./test-project/src/index.ts"
+    },
+    {
+      "id": "outputFile",
+      "type": "promptString",
+      "description": "输出文件路径",
+      "default": "./output/graph.json"
+    }
+  ]
+}
