@@ -6,7 +6,7 @@
     "goodjob": "./bin/function_graph.js"
   },
   "scripts": {
-    "copy-assets": "node -e \"const f=require('fs');f.mkdirSync('dist/languages/python',{recursive:true});f.copyFileSync('src/languages/python/extract.py','dist/languages/python/extract.py');\"",
+    "copy-assets": "node -e \"const f=require('fs'),dirs=['python','c','go','java'];dirs.forEach(d=>{f.mkdirSync('dist/languages/'+d,{recursive:true})});f.copyFileSync('src/languages/python/extract.py','dist/languages/python/extract.py');f.copyFileSync('src/languages/c/extract_c.py','dist/languages/c/extract_c.py');f.copyFileSync('src/languages/go/extract_go.py','dist/languages/go/extract_go.py');f.copyFileSync('src/languages/java/extract_java.py','dist/languages/java/extract_java.py');\"",
     "build": "tsc && npm run copy-assets",
     "dev": "npm run copy-assets && tsc --watch"
   },

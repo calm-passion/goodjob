@@ -2,6 +2,9 @@ import * as path from 'path';
 import { LanguageAnalyzer } from './base';
 import { typescriptAnalyzer } from './typescript/analyzer';
 import { pythonAnalyzer } from './python/analyzer';
+import { cAnalyzer, cppAnalyzer } from './c/analyzer';
+import { goAnalyzer } from './go/analyzer';
+import { javaAnalyzer } from './java/analyzer';
 
 /**
  * 已注册的语言分析器列表。
@@ -10,6 +13,10 @@ import { pythonAnalyzer } from './python/analyzer';
 const analyzers: LanguageAnalyzer[] = [
   typescriptAnalyzer,
   pythonAnalyzer,
+  cAnalyzer,
+  cppAnalyzer,
+  goAnalyzer,
+  javaAnalyzer,
 ];
 
 /**
